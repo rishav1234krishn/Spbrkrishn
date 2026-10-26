@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #131317;
+  --color-surface: #131317;
+  --color-surface-dim: #131317;
+  --color-surface-bright: #39393e;
+  --color-surface-container-lowest: #0e0e12;
+  --color-surface-container-low: #1b1b20;
+  --color-surface-container: #1f1f24;
+  --color-surface-container-high: #2a292e;
+  --color-surface-container-highest: #353439;
+  --color-surface-variant: #353439;
+  
+  --color-on-background: #e4e1e8;
+  --color-on-surface: #e4e1e8;
+  --color-on-surface-variant: #e9bcb6;
+  
+  --color-primary: #ffb4aa;
+  --color-primary-container: #e50914;
+  --color-on-primary: #690003;
+  --color-on-primary-container: #fff7f6;
+  --color-primary-fixed: #ffdad5;
+  --color-primary-fixed-dim: #ffb4aa;
+  
+  --color-secondary: #dbb8ff;
+  --color-secondary-container: #6807ba;
+  --color-on-secondary: #470083;
+  --color-on-secondary-container: #d0a6ff;
+  --color-secondary-fixed: #efdbff;
+  --color-secondary-fixed-dim: #dbb8ff;
+
+  --color-tertiary: #ffb3b6;
+  --color-tertiary-container: #e30744;
+  --color-on-tertiary: #68001a;
+  --color-on-tertiary-container: #fff7f6;
+  
+  --color-outline: #af8782;
+  --color-outline-variant: #5e3f3b;
+
+  --font-display-hero: 'Sora', sans-serif;
+  --font-headline-xl: 'Sora', sans-serif;
+  --font-headline-lg: 'Sora', sans-serif;
+  --font-headline-md: 'Sora', sans-serif;
+  --font-title-card: 'Plus Jakarta Sans', sans-serif;
+  --font-body-lg: 'Plus Jakarta Sans', sans-serif;
+  --font-body-md: 'Plus Jakarta Sans', sans-serif;
+  --font-body-sm: 'Plus Jakarta Sans', sans-serif;
+  --font-label-caps: 'Space Grotesk', sans-serif;
+  --font-badge-spec: 'Space Grotesk', sans-serif;
+  --font-tag-mood: 'Space Grotesk', sans-serif;
+}
+
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #131317;
+    color: #e4e1e8;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

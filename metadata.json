@@ -1,0 +1,6 @@
+{
+  "name": "SPBR Cinema & Anime Streaming Flagship",
+  "description": "Prestige movie and anime streaming platform featuring 4K UHD cinema masters, Tokyo simulcasts, sensory curation, and reactive video playback.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
