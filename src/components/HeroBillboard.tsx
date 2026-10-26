@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Play, Film, Swords, Plus, Check, SlidersHorizontal, Info } from 'lucide-react';
 import { MediaTitle } from '../types/streaming';
-import { MOCK_TITLES } from '../api/streamingApi';
+import { REAL_ALL_TITLES } from '../api/streamingApi';
 
 interface HeroBillboardProps {
   onPlayTitle: (title: MediaTitle) => void;
@@ -19,8 +19,8 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({
   const [universe, setUniverse] = useState<'cinema' | 'anime'>('cinema');
   const [bitrateMode, setBitrateMode] = useState<'65' | 'hdr'>('65');
 
-  const cinemaTitle = MOCK_TITLES.find(t => t.id === 'chrono-dynasty') || MOCK_TITLES[0];
-  const animeTitle = MOCK_TITLES.find(t => t.id === 'blade-celestial-gods') || MOCK_TITLES[1];
+  const cinemaTitle = REAL_ALL_TITLES.find(t => t.id === 'tmdb-693134') || REAL_ALL_TITLES[0];
+  const animeTitle = REAL_ALL_TITLES.find(t => t.id === 'mal-52991') || REAL_ALL_TITLES[1];
 
   const currentTitle = universe === 'cinema' ? cinemaTitle : animeTitle;
   const inWatchlist = isInWatchlist(currentTitle.id);
@@ -64,7 +64,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({
               }`}
             >
               <Film className="w-3.5 h-3.5" />
-              <span>CINEMA MASTER: SOLARIS ODYSSEY</span>
+              <span>CINEMA MASTER: DUNE PART TWO</span>
             </button>
             <button
               onClick={() => setUniverse('anime')}
@@ -75,7 +75,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({
               }`}
             >
               <Swords className="w-3.5 h-3.5" />
-              <span>ANIME APEX: CELESTIAL BLADE</span>
+              <span>ANIME APEX: FRIEREN</span>
             </button>
           </div>
 
@@ -88,7 +88,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({
                   : 'bg-secondary-container/30 text-secondary border border-secondary/30'
               }`}
             >
-              {universe === 'cinema' ? '99% MATCH' : 'MAL 9.48 • TOP RANKED'}
+              {universe === 'cinema' ? '★ 8.2 TMDB • 99% MATCH' : '★ 9.29 MAL • #1 ALL-TIME'}
             </span>
             {currentTitle.specs.map((spec, idx) => (
               <span
@@ -107,22 +107,22 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({
                 universe === 'cinema' ? 'text-primary' : 'text-secondary'
               }`}
             >
-              {currentTitle.kicker}
+              {currentTitle.kicker || (universe === 'cinema' ? 'DENIS VILLENEUVE CINEMATIC MASTERPIECE' : 'MADHOUSE TOKYO PREMIERE • MAL #1 ALL TIME')}
             </span>
 
             <h1 className="font-display-hero text-3xl sm:text-5xl lg:text-6xl font-extrabold text-on-surface tracking-tight leading-none drop-shadow-[0_4px_25px_rgba(0,0,0,0.9)]">
               {universe === 'cinema' ? (
                 <>
-                  CHRONO DYNASTY:{' '}
+                  DUNE:{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-on-primary-container to-secondary">
-                    INFINITE VEIL
+                    PART TWO
                   </span>
                 </>
               ) : (
                 <>
-                  BLADE OF THE{' '}
+                  FRIEREN:{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary via-secondary-fixed-dim to-primary">
-                    CELESTIAL GODS
+                    BEYOND JOURNEY'S END
                   </span>
                 </>
               )}
@@ -145,7 +145,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({
               }`}
             >
               <Play className="w-5 h-5 fill-current" />
-              <span>{universe === 'cinema' ? 'STREAM MASTER' : 'PLAY EPISODE 14 (SIMULCAST)'}</span>
+              <span>{universe === 'cinema' ? 'STREAM 4K MASTER' : 'PLAY EPISODE 28 (FINALE)'}</span>
             </button>
 
             {/* Trailer / Details Button */}

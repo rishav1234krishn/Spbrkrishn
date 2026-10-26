@@ -34,12 +34,14 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   const { data: results, isLoading } = useSearchTitlesQuery(debouncedQuery, category);
 
   const quickPicks = [
-    'Chrono Dynasty',
-    'Blade of Celestial Gods',
-    'Neo-Shinjuku 2099',
-    'Whispers in the Void',
-    'Aether: Beyond Event Horizon',
-    'Shadow Sovereign'
+    'Dune: Part Two',
+    'Frieren',
+    'Oppenheimer',
+    'Demon Slayer',
+    'Blade Runner 2049',
+    'Solo Leveling',
+    'Attack on Titan',
+    'Shōgun'
   ];
 
   return (

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Swords, Flame, Calendar, Play, Bell, Zap, Moon } from 'lucide-react';
 import { useTokyoAnimeQuery, useSimulcastScheduleQuery } from '../hooks/useStreamingQueries';
 import { MediaTitle } from '../types/streaming';
-import { MOCK_TITLES } from '../api/streamingApi';
+import { REAL_ALL_TITLES } from '../api/streamingApi';
 
 interface AnimeUniverseSectionProps {
   onPlayTitle: (title: MediaTitle) => void;
@@ -20,20 +20,20 @@ export const AnimeUniverseSection: React.FC<AnimeUniverseSectionProps> = ({
   const { data: animeTitles, isLoading: isAnimeLoading } = useTokyoAnimeQuery(selectedGenre);
   const { data: scheduleItems } = useSimulcastScheduleQuery(selectedDay);
 
-  // Voting Arena State
-  const [raidenVotes, setRaidenVotes] = useState(63);
+  // Voting Arena State - Levi Ackerman vs Satoru Gojo
+  const [leviVotes, setLeviVotes] = useState(58);
   const [hasVoted, setHasVoted] = useState(false);
 
-  const castVote = (candidate: 'raiden' | 'malakor') => {
-    if (candidate === 'raiden') {
-      setRaidenVotes(prev => Math.min(95, prev + 1));
+  const castVote = (candidate: 'levi' | 'gojo') => {
+    if (candidate === 'levi') {
+      setLeviVotes(prev => Math.min(95, prev + 1));
     } else {
-      setRaidenVotes(prev => Math.max(5, prev - 1));
+      setLeviVotes(prev => Math.max(5, prev - 1));
     }
     setHasVoted(true);
   };
 
-  const malakorVotes = 100 - raidenVotes;
+  const gojoVotes = 100 - leviVotes;
 
   const days = [
     { code: 'MON', date: '24', count: '4 Premieres' },
@@ -237,7 +237,7 @@ export const AnimeUniverseSection: React.FC<AnimeUniverseSectionProps> = ({
 
                   <button
                     onClick={() => {
-                      const match = MOCK_TITLES.find(t => t.title.toLowerCase().includes(item.title.toLowerCase())) || MOCK_TITLES[1];
+                      const match = REAL_ALL_TITLES.find(t => t.title.toLowerCase().includes(item.title.toLowerCase())) || REAL_ALL_TITLES[1];
                       onPlayTitle(match);
                     }}
                     className="p-2 rounded-full bg-secondary-container text-on-secondary-container hover:scale-110 transition-transform shadow-md shrink-0"
@@ -260,49 +260,49 @@ export const AnimeUniverseSection: React.FC<AnimeUniverseSectionProps> = ({
               </span>
             </div>
             <h3 className="font-headline-md text-lg sm:text-xl font-bold text-on-surface">
-              Who Wins in a Dimension-Ending Duel?
+              Who Wins in an Uncapped Apex Duel?
             </h3>
             <p className="font-body-sm text-xs sm:text-sm text-on-surface-variant">
-              Cast your vote in real-time. SPBR will stream a bespoke 4K animated comparison reel rendered by the community studio this Saturday!
+              Cast your vote in real-time. SPBR will stream a bespoke 4K comparison and sakuga analysis reel this Saturday!
             </p>
 
             {/* Voting Bar */}
             <div className="flex flex-col gap-2 pt-1">
               <div className="flex items-center justify-between font-label-caps text-xs">
-                <span className="text-primary font-bold">RAIDEN (CELESTIAL STANCE) • {raidenVotes}%</span>
-                <span className="text-secondary font-bold">ARCHON MALAKOR • {malakorVotes}%</span>
+                <span className="text-primary font-bold">LEVI ACKERMAN (ATTACK ON TITAN) • {leviVotes}%</span>
+                <span className="text-secondary font-bold">SATORU GOJO (JUJUTSU KAISEN) • {gojoVotes}%</span>
               </div>
               <div className="w-full bg-surface-container-highest h-3 rounded-full overflow-hidden flex cursor-pointer">
                 <div
                   className="bg-gradient-to-r from-primary to-primary-container h-full transition-all duration-500 shadow-[0_0_10px_#e50914]"
-                  style={{ width: `${raidenVotes}%` }}
+                  style={{ width: `${leviVotes}%` }}
                 />
                 <div
                   className="bg-gradient-to-r from-secondary to-secondary-container h-full transition-all duration-500 shadow-[0_0_10px_#6807ba]"
-                  style={{ width: `${malakorVotes}%` }}
+                  style={{ width: `${gojoVotes}%` }}
                 />
               </div>
               <div className="flex items-center justify-between text-[11px] font-badge-spec text-on-surface-variant/70">
                 <span>18,493 Votes Logged {hasVoted && '• Your vote was counted!'}</span>
-                <span>Founder Curation: "Malakor's spatial distortion is underrated" — Rishav Krishn Sharma</span>
+                <span>Founder Note: "Limitless Void vs Humanity's Strongest Soldier" — Rishav Krishn Sharma</span>
               </div>
             </div>
           </div>
 
           <div className="flex items-center gap-3 shrink-0">
             <button
-              onClick={() => castVote('raiden')}
+              onClick={() => castVote('levi')}
               className="px-4 py-2.5 rounded-xl bg-primary-container/20 hover:bg-primary-container/40 text-primary font-badge-spec text-xs font-bold flex items-center gap-2 transition-all border border-primary/30"
             >
               <Zap className="w-4 h-4" />
-              <span>VOTE RAIDEN</span>
+              <span>VOTE LEVI</span>
             </button>
             <button
-              onClick={() => castVote('malakor')}
+              onClick={() => castVote('gojo')}
               className="px-4 py-2.5 rounded-xl bg-secondary-container/20 hover:bg-secondary-container/40 text-secondary font-badge-spec text-xs font-bold flex items-center gap-2 transition-all border border-secondary/30"
             >
               <Moon className="w-4 h-4" />
-              <span>VOTE MALAKOR</span>
+              <span>VOTE GOJO</span>
             </button>
           </div>
         </div>

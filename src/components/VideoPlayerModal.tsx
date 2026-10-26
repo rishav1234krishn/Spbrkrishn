@@ -150,17 +150,34 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({
       onMouseMove={resetControlsTimeout}
       className="fixed inset-0 z-50 bg-black flex items-center justify-center overflow-hidden select-none"
     >
-      {/* HTML5 Video element */}
-      <video
-        ref={videoRef}
-        src={title.videoUrl}
-        autoPlay
-        playsInline
-        onTimeUpdate={handleTimeUpdate}
-        onEnded={() => setIsPlaying(false)}
-        className="w-full h-full object-contain cursor-pointer"
-        onClick={togglePlay}
-      />
+      {/* Official Studio Trailer Embed or HTML5 Video element */}
+      {title.trailerEmbedUrl ? (
+        <div className="relative w-full h-full flex flex-col items-center justify-center bg-black">
+          <iframe
+            src={`${title.trailerEmbedUrl}?autoplay=1&rel=0&modestbranding=1`}
+            title={`${title.title} Official Studio Trailer`}
+            className="w-full h-full max-h-[85vh] aspect-video border-0 shadow-2xl"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+          {/* Honest Licensing & Preview Notice */}
+          <div className="absolute bottom-3 inset-x-4 max-w-2xl mx-auto px-4 py-2 rounded-full bg-surface-container-lowest/90 backdrop-blur-md border border-surface-container-highest/60 text-[11px] text-center text-on-surface-variant flex items-center justify-center gap-2 shadow-xl">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+            <span>Official Studio Trailer &amp; Cinema Preview • Full features streamable through authorized regional partners</span>
+          </div>
+        </div>
+      ) : (
+        <video
+          ref={videoRef}
+          src={title.videoUrl}
+          autoPlay
+          playsInline
+          onTimeUpdate={handleTimeUpdate}
+          onEnded={() => setIsPlaying(false)}
+          className="w-full h-full object-contain cursor-pointer"
+          onClick={togglePlay}
+        />
+      )}
 
       {/* Toast Notification */}
       {showToast && (

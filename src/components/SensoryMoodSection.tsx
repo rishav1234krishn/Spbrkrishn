@@ -2,7 +2,7 @@ import React from 'react';
 import { Brain, Zap, Eye, Terminal, Heart, Sparkles, Globe } from 'lucide-react';
 import { useSensoryMoodsQuery } from '../hooks/useStreamingQueries';
 import { MediaTitle } from '../types/streaming';
-import { MOCK_TITLES } from '../api/streamingApi';
+import { REAL_ALL_TITLES } from '../api/streamingApi';
 
 interface SensoryMoodSectionProps {
   onSelectMoodTitle: (title: MediaTitle) => void;
@@ -27,10 +27,10 @@ export const SensoryMoodSection: React.FC<SensoryMoodSectionProps> = ({
 
   const handleCardClick = (moodName: string) => {
     // Find matching title or pick first relevant title
-    const match = MOCK_TITLES.find(t => 
+    const match = REAL_ALL_TITLES.find(t => 
       (t.moodTag && moodName.toLowerCase().includes(t.moodTag.toLowerCase())) ||
       t.genre.some(g => moodName.toLowerCase().includes(g.toLowerCase()))
-    ) || MOCK_TITLES[0];
+    ) || REAL_ALL_TITLES[0];
     onSelectMoodTitle(match);
   };
 

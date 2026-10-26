@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Film, Sparkles, RefreshCw, Play, PlayCircle, CheckCircle2 } from 'lucide-react';
 import { useCinemaVaultQuery } from '../hooks/useStreamingQueries';
 import { MediaTitle } from '../types/streaming';
-import { MOCK_TITLES } from '../api/streamingApi';
+import { REAL_ALL_TITLES } from '../api/streamingApi';
 
 interface CinemaVaultSectionProps {
   onPlayTitle: (title: MediaTitle) => void;
@@ -16,37 +16,37 @@ export const CinemaVaultSection: React.FC<CinemaVaultSectionProps> = ({
   const [selectedGenre, setSelectedGenre] = useState('ALL CINEMA');
   const { data: movies, isLoading } = useCinemaVaultQuery(selectedGenre);
 
-  // Reel roulette state
+  // Reel roulette state using verified TMDB titles
   const roulettePicks = [
     {
-      id: 'chrono-dynasty',
-      title: 'Chrono Dynasty: Infinite Veil',
-      desc: '168 mins • 4K Dolby Atmos • 99% Match',
-      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCV2w7btT5gZOHsgbOQUfT7Oq9CyFpflAISkvoJptztjo9JiL96gY2x0XTwujESuMwuO5IPP-BOSSvN8yr6bYTqZybK8bU0Q5gljMXi1Z39Ls6PDd_-DinnoLiz_N6N8QimTpa7DJNK4OTvOahMjKH3MDwOoCeCq55Arjs8F8AAeERb5R2KXiTz2neTK2i9iR4AdVZmDqeSrb4bxy0xQ8FMFdbp8YhFmXF5vOSDhaaDoYQq8yoOrsHZ'
+      id: 'tmdb-693134',
+      title: 'Dune: Part Two',
+      desc: '166 mins • 4K IMAX 65mm • 8.2 TMDB',
+      img: 'https://image.tmdb.org/t/p/w780/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg'
     },
     {
-      id: 'aether-event-horizon',
-      title: 'Aether: Beyond Event Horizon',
-      desc: '151 mins • Native IMAX 65mm • 99% Match',
-      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDSGcs8gnqBJ7OCY-o_lgz-Ln8ycVc7uHfwdR8ARnV9fCajzX-8hHTGrMRxrht_7FfFfLssKc5RKLvOWgfHg7Vke1VhbNm_l34c6JanT-JPNhB43Jb0C-MLF3r4NPh_rhvsICTC6GhfIbgiuKmptcZE2f28PZjSpzGcBG_C9BQr4xRWlW9Xr47K2HAEfjo1NAOOHSNPIpivXDsPhnZTU9my_2cF6I9SB5aFLSn9EpDLiMW2d_efjMk3'
+      id: 'tmdb-872585',
+      title: 'Oppenheimer',
+      desc: '180 mins • 70mm IMAX Master • 8.1 TMDB',
+      img: 'https://image.tmdb.org/t/p/w780/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg'
     },
     {
-      id: 'the-geneva-cipher',
-      title: 'The Geneva Cipher (Master Cut)',
-      desc: '134 mins • Dolby Vision • 97% Match',
-      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCJivZaV-eJSw-ZBbeoBV0_rz76OWnLcCN3-HOweb613BZcP5JQLkrrIXQ2FIiPEht_N41BlsrdPRHPXF5VWRR1C2WwvKNejQjllBhuiSGVMJ_aCS8LNn5VVmE2YdBxbJCv7bo2nIm1zYQlMo4oP5Hgpsn3TMdq7UhXXeH-_INrn0FqDxC7ZLYxzxiH__BCS4kC5ecPY0f641B6DcbzFXpMiEEkW9H7ERE9fBnHra_V-t_sryMI9Ax_'
+      id: 'tmdb-157336',
+      title: 'Interstellar',
+      desc: '169 mins • 4K Dolby Atmos • 8.4 TMDB',
+      img: 'https://image.tmdb.org/t/p/w780/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg'
     },
     {
-      id: 'the-prague-syndicate',
-      title: 'The Prague Syndicate',
-      desc: '114 mins • 65 Mbps Master • 95% Match',
-      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBpyn-HznAwwCGHxxpdof-trzY4DBwm4HZeuComoUM2b-tsUK0GD0r8wAoH654ER4zkUTBtDakQq0TNI56lvMR5x8fIw-8yd_9pj2uthnmCKUCt4T6Ehhh60waNAWhZREM3wvQbG3a2h2IlIrsEZBsWKHaX5JS9Yp-5X5amRyKoLjHOYpDwtnZXpJr8_AhgZJTKWro15ZUFie37O_a_m7ZSAH_M7RjGbk8RHOi45fnkq2rMMVyaD0SC'
+      id: 'tmdb-335984',
+      title: 'Blade Runner 2049',
+      desc: '164 mins • Atmos 9.1.4 Reference • 7.6 TMDB',
+      img: 'https://image.tmdb.org/t/p/w780/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg'
     },
     {
-      id: 'the-iron-ronin',
-      title: 'The Iron Ronin',
-      desc: '142 mins • SPBR Exclusive Cut • 98% Match',
-      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDTXlKjVkzr1zCs0cBmflHIg330kGxfBHHf6ItR8wbDphIYxEhc0Zflr5BHg6xufbj-V8X1Tkq-7BJmm1XPDQmdXYCsTB3sM9a98wK0C2vhKrfVC_8hcRL_TDM0sBbo9FDMOcMlGm8ro6f5JQdP-GG1_osrM6SfqQAka7XLAoVmeLFS6Tivg0UGa8ZUtC3ty9G_Yw3R2N9CROG5_VMML1Y_y2y40vc8S8LgbtTiWQ5UDIcZsz8mjUs0'
+      id: 'tmdb-569094',
+      title: 'Spider-Man: Across the Spider-Verse',
+      desc: '140 mins • 4K Dolby Vision • 8.4 TMDB',
+      img: 'https://image.tmdb.org/t/p/w780/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg'
     }
   ];
 
@@ -205,7 +205,7 @@ export const CinemaVaultSection: React.FC<CinemaVaultSectionProps> = ({
                 <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
                   <button
                     onClick={() => {
-                      const full = MOCK_TITLES.find(t => t.id === currentPick.id) || MOCK_TITLES[0];
+                      const full = REAL_ALL_TITLES.find(t => t.id === currentPick.id) || REAL_ALL_TITLES[0];
                       onPlayTitle(full);
                     }}
                     className="px-3.5 py-2 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-xs font-bold text-on-surface flex items-center gap-1.5 transition-colors"
@@ -260,7 +260,7 @@ export const CinemaVaultSection: React.FC<CinemaVaultSectionProps> = ({
             <div className="pt-4 flex flex-col gap-2">
               <div
                 onClick={() => {
-                  const m = MOCK_TITLES.find(t => t.id === 'aether-event-horizon') || MOCK_TITLES[0];
+                  const m = REAL_ALL_TITLES.find(t => t.id === 'tmdb-872585') || REAL_ALL_TITLES[0];
                   onPlayTitle(m);
                 }}
                 className="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container-highest transition-colors cursor-pointer group border border-surface-container-highest/40"
@@ -269,7 +269,7 @@ export const CinemaVaultSection: React.FC<CinemaVaultSectionProps> = ({
                   <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
                   <div>
                     <h5 className="font-title-card text-xs font-bold text-on-surface group-hover:text-primary transition-colors">
-                      Quantum Solitude (4K IMAX)
+                      Oppenheimer (70mm IMAX Cut)
                     </h5>
                     <p className="font-body-sm text-[11px] text-on-surface-variant">Recommended by Rishav • Reference HDR</p>
                   </div>
@@ -279,7 +279,7 @@ export const CinemaVaultSection: React.FC<CinemaVaultSectionProps> = ({
 
               <div
                 onClick={() => {
-                  const m = MOCK_TITLES.find(t => t.id === 'the-geneva-cipher') || MOCK_TITLES[0];
+                  const m = REAL_ALL_TITLES.find(t => t.id === 'tmdb-335984') || REAL_ALL_TITLES[0];
                   onPlayTitle(m);
                 }}
                 className="flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container-highest transition-colors cursor-pointer group border border-surface-container-highest/40"
@@ -288,7 +288,7 @@ export const CinemaVaultSection: React.FC<CinemaVaultSectionProps> = ({
                   <CheckCircle2 className="w-4 h-4 text-secondary shrink-0" />
                   <div>
                     <h5 className="font-title-card text-xs font-bold text-on-surface group-hover:text-secondary transition-colors">
-                      The Geneva Cipher (Uncut)
+                      Blade Runner 2049 (Spatial Master)
                     </h5>
                     <p className="font-body-sm text-[11px] text-on-surface-variant">Recommended by Balmukund • 9.1.4 Atmos</p>
                   </div>

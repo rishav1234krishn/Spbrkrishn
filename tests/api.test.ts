@@ -163,3 +163,88 @@ describe('Backend API: POST /api/echo', () => {
     assert.strictEqual(res.body.error, 'Payload Too Large');
   });
 });
+
+describe('Backend API: Real Content Endpoints', () => {
+  test('GET /api/tmdb/status returns JSON with provider configuration state and attribution', async () => {
+    const res = await request(app)
+      .get('/api/tmdb/status')
+      .expect('Content-Type', /json/)
+      .expect(200);
+
+    assert.strictEqual(typeof res.body.configured, 'boolean');
+    assert.ok(res.body.attribution.includes('TMDB'));
+  });
+
+  test('GET /api/movies/trending returns verified real movies with real TMDB IDs and poster URLs', async () => {
+    const res = await request(app)
+      .get('/api/movies/trending')
+      .expect('Content-Type', /json/)
+      .expect(200);
+
+    assert.strictEqual(res.body.status, 'ok');
+    assert.ok(Array.isArray(res.body.data));
+    assert.ok(res.body.data.length > 0);
+
+    // Verify first movie has real fields
+    const movie = res.body.data[0];
+    assert.ok(movie.title, 'Movie must have a title');
+    assert.ok(movie.tmdbId, 'Movie must have a real tmdbId');
+    assert.ok(movie.posterUrl.includes('image.tmdb.org'), 'Poster URL must use real TMDB image CDN');
+    assert.strictEqual(movie.sourceProvider, 'tmdb');
+
+    // Verify no fictional titles are present
+    const titles = res.body.data.map((m: any) => m.title.toLowerCase());
+    assert.ok(!titles.includes('chrono dynasty: infinite veil'), 'Fictional Chrono Dynasty must not exist');
+    assert.ok(!titles.includes('vortex protocol'), 'Fictional Vortex Protocol must not exist');
+  });
+
+  test('GET /api/anime/trending returns verified real anime with real MyAnimeList scores and studios', async () => {
+    const res = await request(app)
+      .get('/api/anime/trending')
+      .expect('Content-Type', /json/)
+      .expect(200);
+
+    assert.strictEqual(res.body.status, 'ok');
+    assert.ok(Array.isArray(res.body.data));
+    assert.ok(res.body.data.length > 0);
+
+    const anime = res.body.data[0];
+    assert.ok(anime.title, 'Anime must have a title');
+    assert.ok(anime.malId, 'Anime must have a real malId');
+    assert.ok(anime.rating > 8.0, 'Top anime must have realistic MAL rating');
+    assert.ok(anime.sourceProvider, 'Must specify source provider');
+
+    // Verify no fictional anime titles are present
+    const titles = res.body.data.map((a: any) => a.title.toLowerCase());
+    assert.ok(!titles.includes('blade of celestial gods'), 'Fictional Blade of Celestial Gods must not exist');
+    assert.ok(!titles.includes('neo-shinjuku 2099'), 'Fictional Neo-Shinjuku 2099 must not exist');
+  });
+
+  test('GET /api/anime/schedule returns verified weekly Tokyo broadcast schedule', async () => {
+    const res = await request(app)
+      .get('/api/anime/schedule?day=FRI')
+      .expect('Content-Type', /json/)
+      .expect(200);
+
+    assert.strictEqual(res.body.status, 'ok');
+    assert.ok(Array.isArray(res.body.data));
+    assert.ok(res.body.data.length > 0);
+
+    const item = res.body.data[0];
+    assert.strictEqual(item.day, 'FRI');
+    assert.ok(item.timeJST, 'Must have JST broadcast time');
+    assert.ok(item.network, 'Must have Japanese network name');
+  });
+
+  test('GET /api/search returns real matching titles for "Dune" or "Frieren"', async () => {
+    const res = await request(app)
+      .get('/api/search?q=Dune')
+      .expect('Content-Type', /json/)
+      .expect(200);
+
+    assert.strictEqual(res.body.status, 'ok');
+    assert.ok(Array.isArray(res.body.data));
+    assert.ok(res.body.data.some((t: any) => t.title.toLowerCase().includes('dune')));
+  });
+});
+

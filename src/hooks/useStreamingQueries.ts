@@ -1,26 +1,28 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { streamingApi, MOCK_TITLES } from '../api/streamingApi';
-import { MediaTitle } from '../types/streaming';
+import { useQuery } from '@tanstack/react-query';
+import { streamingApi, REAL_ALL_TITLES } from '../api/streamingApi';
+import type { MediaTitle } from '../types/streaming';
 import { useState, useEffect } from 'react';
 
 export const queryKeys = {
   allTitles: ['titles', 'all'] as const,
   continueWatching: ['stream', 'continue-watching'] as const,
   top10Global: ['titles', 'top10-global'] as const,
-  top10Anime: (genre?: string) => ['titles', 'top10-anime', genre || 'ALL'] as const,
+  topAnime: (genre?: string) => ['titles', 'top-anime', genre || 'ALL'] as const,
   cinemaVault: (genre?: string) => ['titles', 'cinema-vault', genre || 'ALL'] as const,
+  popularTv: ['titles', 'popular-tv'] as const,
   schedule: (day: string) => ['schedule', day] as const,
   sensoryMoods: ['sensory', 'moods'] as const,
   titleDetails: (id: string) => ['titles', 'detail', id] as const,
-  search: (query: string, category?: string) => ['titles', 'search', query, category || 'all'] as const,
+  search: (query: string, type?: string) => ['titles', 'search', query, type || 'all'] as const,
+  tmdbStatus: ['tmdb', 'status'] as const,
 };
 
-// Hook for Top 10 Global Streams
+// Hook for Top 10 Global Trending Streams (TMDB Movies + Jikan Anime)
 export function useTop10GlobalQuery() {
   return useQuery({
     queryKey: queryKeys.top10Global,
     queryFn: () => streamingApi.getTop10Global(),
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5,
     retry: 2,
   });
 }
@@ -34,16 +36,16 @@ export function useContinueWatchingQuery() {
   });
 }
 
-// Hook for Tokyo Anime Heatmap with Genre Filter
+// Hook for Tokyo Anime Heatmap / Airing with Genre Filter (Jikan API)
 export function useTokyoAnimeQuery(genre: string = 'ALL') {
   return useQuery({
-    queryKey: queryKeys.top10Anime(genre),
-    queryFn: () => streamingApi.getTokyoTop10Anime(genre),
+    queryKey: queryKeys.topAnime(genre),
+    queryFn: () => streamingApi.getTokyoTrendingAnime(genre),
     staleTime: 1000 * 60 * 5,
   });
 }
 
-// Hook for Cinema Vault with Genre Filter
+// Hook for Cinema Vault with Genre Filter (TMDB API)
 export function useCinemaVaultQuery(genre: string = 'ALL CINEMA') {
   return useQuery({
     queryKey: queryKeys.cinemaVault(genre),
@@ -52,7 +54,7 @@ export function useCinemaVaultQuery(genre: string = 'ALL CINEMA') {
   });
 }
 
-// Hook for Weekly Tokyo Simulcast Schedule
+// Hook for Weekly Tokyo Simulcast Schedule (Jikan API)
 export function useSimulcastScheduleQuery(day: string = 'FRI') {
   return useQuery({
     queryKey: queryKeys.schedule(day),
@@ -71,10 +73,10 @@ export function useSensoryMoodsQuery() {
 }
 
 // Hook for Search Titles with Debounced Query & Category
-export function useSearchTitlesQuery(query: string, category: string = 'all') {
+export function useSearchTitlesQuery(query: string, type: 'all' | 'movie' | 'tv' | 'anime' = 'all') {
   return useQuery({
-    queryKey: queryKeys.search(query, category),
-    queryFn: () => streamingApi.searchTitles(query, category),
+    queryKey: queryKeys.search(query, type),
+    queryFn: () => streamingApi.searchTitles(query, type),
     enabled: query.trim().length > 0,
     staleTime: 1000 * 60 * 3,
   });
@@ -90,16 +92,45 @@ export function useTitleDetailQuery(id: string | null) {
   });
 }
 
+// Hook for TMDB provider status
+export function useTmdbStatusQuery() {
+  return useQuery({
+    queryKey: queryKeys.tmdbStatus,
+    queryFn: () => streamingApi.getTmdbStatus(),
+    staleTime: 1000 * 60 * 30,
+  });
+}
+
 // Persistent Watchlist Hook backed by localStorage & React State
 const WATCHLIST_STORAGE_KEY = 'spbr_user_watchlist';
+
+// Migration map from old fictional IDs to real TMDB / MAL IDs
+const LEGACY_ID_MIGRATIONS: Record<string, string> = {
+  'chrono-dynasty': 'tmdb-693134',
+  'blade-celestial-gods': 'mal-52991',
+  'vortex-protocol': 'tmdb-335984',
+  'shadow-sovereign': 'mal-52299',
+  'neo-shinjuku-2099': 'mal-42249',
+  'whispers-in-the-void': 'tmdb-872585',
+  'the-geneva-cipher': 'tmdb-155',
+  'aether-event-horizon': 'tmdb-157336',
+  'apex-dragon-rebirth': 'mal-16498',
+  'arcana-grimoire-zero': 'mal-5114',
+};
 
 export function useWatchlist() {
   const [watchlistIds, setWatchlistIds] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem(WATCHLIST_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : ['chrono-dynasty', 'blade-celestial-gods'];
+      if (saved) {
+        const parsed: string[] = JSON.parse(saved);
+        // Cleanse any legacy fictional IDs to real IDs
+        const migrated = parsed.map(id => LEGACY_ID_MIGRATIONS[id] || id);
+        return Array.from(new Set(migrated));
+      }
+      return ['tmdb-693134', 'mal-52991']; // Dune: Part Two & Frieren: Beyond Journey's End
     } catch {
-      return ['chrono-dynasty', 'blade-celestial-gods'];
+      return ['tmdb-693134', 'mal-52991'];
     }
   });
 
@@ -117,7 +148,7 @@ export function useWatchlist() {
 
   const isInWatchlist = (id: string) => watchlistIds.includes(id);
 
-  const watchlistItems: MediaTitle[] = MOCK_TITLES.filter(title => watchlistIds.includes(title.id));
+  const watchlistItems: MediaTitle[] = REAL_ALL_TITLES.filter(title => watchlistIds.includes(title.id));
 
   return {
     watchlistIds,

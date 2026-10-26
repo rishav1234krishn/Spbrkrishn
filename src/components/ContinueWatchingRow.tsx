@@ -2,7 +2,7 @@ import React from 'react';
 import { Play, MoreVertical, RefreshCw } from 'lucide-react';
 import { useContinueWatchingQuery } from '../hooks/useStreamingQueries';
 import { ContinueWatchingItem, MediaTitle } from '../types/streaming';
-import { MOCK_TITLES } from '../api/streamingApi';
+import { REAL_ALL_TITLES } from '../api/streamingApi';
 
 interface ContinueWatchingRowProps {
   onPlayItem: (title: MediaTitle) => void;
@@ -16,20 +16,22 @@ export const ContinueWatchingRow: React.FC<ContinueWatchingRowProps> = ({
   const { data: items, isLoading, isError, error, refetch } = useContinueWatchingQuery();
 
   const handleCardClick = (item: ContinueWatchingItem) => {
-    const fullTitle = MOCK_TITLES.find(t => t.id === item.titleId) || {
+    const fullTitle = REAL_ALL_TITLES.find(t => t.id === item.titleId) || {
       id: item.titleId,
       title: item.title,
       category: item.category,
       genre: ['Action', 'Thriller'],
-      rating: 9.5,
+      rating: 9.0,
       matchPercentage: 98,
       specs: [item.badge, '4K UHD', 'ATMOS'],
       posterUrl: item.thumbnailUrl,
       backdropUrl: item.thumbnailUrl,
       videoUrl: item.videoUrl,
+      trailerEmbedUrl: item.trailerEmbedUrl,
       synopsis: item.subtitle,
       contentRating: 'PG-13',
-      releaseYear: 2025,
+      releaseYear: 2024,
+      sourceProvider: 'curated',
     };
     onPlayItem(fullTitle);
   };

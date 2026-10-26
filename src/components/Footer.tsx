@@ -103,8 +103,24 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
+        {/* Provider Attribution Notices (TMDB & Jikan/MyAnimeList Compliance) */}
+        <div className="py-4 border-t border-surface-container-highest/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-on-surface-variant/70">
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded bg-surface-container-high text-primary font-bold font-badge-spec text-[10px]">
+              TMDB
+            </span>
+            <span>This product uses the TMDB API but is not endorsed or certified by TMDB.</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-bold font-badge-spec text-[10px]">
+              JIKAN / MAL
+            </span>
+            <span>Anime metadata provided via Jikan, an open-source public REST API for MyAnimeList.</span>
+          </div>
+        </div>
+
         {/* Bottom Legal bar */}
-        <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-on-surface-variant/70 text-xs">
+        <div className="pt-4 flex flex-col md:flex-row items-center justify-between gap-4 text-on-surface-variant/70 text-xs">
           <div className="flex flex-wrap items-center gap-4">
             <a href="#" className="hover:text-on-surface transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-on-surface transition-colors">Terms of Use</a>

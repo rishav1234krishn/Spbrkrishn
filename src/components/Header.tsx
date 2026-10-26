@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Bell, Bookmark, Film, X, Check, ExternalLink, User, Settings, ShieldCheck } from 'lucide-react';
 import { MediaTitle } from '../types/streaming';
-import { MOCK_TITLES } from '../api/streamingApi';
+import { REAL_ALL_TITLES } from '../api/streamingApi';
 
 const SIMULCAST_DISMISS_KEY = 'spbr_simulcast_alerts_dismissed';
 
@@ -102,7 +102,7 @@ export const Header: React.FC<HeaderProps> = ({
       setReadAlerts((prev) => [...prev, titleId]);
     }
     if (onSelectTitle) {
-      const match = MOCK_TITLES.find((t) => t.id === titleId);
+      const match = REAL_ALL_TITLES.find((t) => t.id === titleId);
       if (match) {
         onSelectTitle(match);
       }
@@ -303,19 +303,19 @@ export const Header: React.FC<HeaderProps> = ({
                 <div className="flex flex-col gap-2.5 text-xs overflow-y-auto max-h-[60vh] pr-0.5">
                   {/* Alert 1 */}
                   <div
-                    onClick={(e) => handleAlertClick(e, 'blade-celestial-gods')}
+                    onClick={(e) => handleAlertClick(e, 'mal-52991')}
                     className="p-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer border border-surface-container-highest/40 group/alert"
                   >
                     <div className="flex items-start justify-between gap-1">
                       <p className="font-bold text-on-surface text-xs group-hover/alert:text-secondary transition-colors">
-                        Blade of Celestial Gods
+                        Frieren: Beyond Journey's End
                       </p>
-                      {readAlerts.includes('blade-celestial-gods') && (
+                      {readAlerts.includes('mal-52991') && (
                         <Check className="w-3.5 h-3.5 text-secondary shrink-0 mt-0.5" />
                       )}
                     </div>
                     <p className="text-on-surface-variant text-[11px] mt-0.5">
-                      Episode 14 Simulcast is now LIVE in 4K 60FPS.
+                      Season Finale (Ep 28) streaming in Tokyo MX Master audio • Score 9.29 MAL #1.
                     </p>
                     <span className="text-[10px] text-secondary mt-1 block font-mono">
                       14m ago
@@ -324,19 +324,19 @@ export const Header: React.FC<HeaderProps> = ({
 
                   {/* Alert 2 */}
                   <div
-                    onClick={(e) => handleAlertClick(e, 'aether-event-horizon')}
+                    onClick={(e) => handleAlertClick(e, 'tmdb-693134')}
                     className="p-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer border border-surface-container-highest/40 group/alert"
                   >
                     <div className="flex items-start justify-between gap-1">
                       <p className="font-bold text-on-surface text-xs group-hover/alert:text-primary transition-colors">
-                        Aether: Beyond Event Horizon
+                        Dune: Part Two
                       </p>
-                      {readAlerts.includes('aether-event-horizon') && (
+                      {readAlerts.includes('tmdb-693134') && (
                         <Check className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
                       )}
                     </div>
                     <p className="text-on-surface-variant text-[11px] mt-0.5">
-                      65 Mbps Studio Master added to SPBR Cinema Vault.
+                      Denis Villeneuve 4K IMAX uncompressed master added to SPBR Cinema Vault.
                     </p>
                     <span className="text-[10px] text-primary mt-1 block font-mono">
                       2h ago
