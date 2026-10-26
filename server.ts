@@ -1,6 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
-import express, { Request, Response } from 'express';
+import express from 'express';
+import type { Request, Response } from 'express';
 import { createExpressApp } from './server/api.ts';
 
 const __filename = fileURLToPath(import.meta.url);
