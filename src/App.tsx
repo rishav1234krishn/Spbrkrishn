@@ -61,6 +61,7 @@ function StreamingApp() {
         onOpenSearch={() => setIsSearchOpen(true)}
         onOpenWatchlist={() => setIsWatchlistOpen(true)}
         watchlistCount={watchlistItems.length}
+        onSelectTitle={handleOpenDetails}
       />
 
       {/* Main Content Area */}

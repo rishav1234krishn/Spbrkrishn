@@ -157,15 +157,17 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({
               <span>{universe === 'cinema' ? 'TRAILER 4K' : 'EPISODES & DETAILS'}</span>
             </button>
 
-            {/* Watchlist Toggle */}
+            {/* Watchlist Toggle Checkmark Control */}
             <button
+              type="button"
               onClick={() => onToggleWatchlist(currentTitle.id)}
-              className={`w-11 h-11 rounded-full flex items-center justify-center transition-all border border-surface-container-highest/60 ${
+              className={`w-11 h-11 rounded-full flex items-center justify-center transition-all border border-surface-container-highest/60 focus:outline-none focus:ring-1 focus:ring-primary ${
                 inWatchlist
                   ? 'bg-primary-container text-on-primary-container shadow-[0_0_15px_rgba(229,9,20,0.5)]'
                   : 'bg-surface-container-low/90 backdrop-blur-md text-on-surface hover:text-primary hover:bg-surface-container-high'
               }`}
               title={inWatchlist ? 'Remove from My List' : 'Add to My List'}
+              aria-label={inWatchlist ? 'Remove from My List' : 'Add to My List'}
             >
               {inWatchlist ? <Check className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
             </button>
